@@ -1,0 +1,530 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+<style>
+/* arxa fon*/
+  body {
+    font-family: sans-serif;
+    background-size: cover;
+    background-repeat: no-repeat;
+    justify-content: center;
+    align-items: center;
+    background-attachment: fixed;
+    touch-action: none;
+    height: 100vh;
+    animation:arxafon 20s infinite;
+  }
+ @keyframes arxafon {
+  0%   { background-image: url("arxafon1.jpg"); }
+  12.5%{ background-image: url("arxafon2.jpg"); }
+  25%  { background-image: url("arxafon3.jpg"); }
+  37.5%{ background-image: url("arxafon4.jpg"); }
+  50%  { background-image: url("arxafon5.jpg"); }
+  62.5%{ background-image: url("arxafon6.jpg"); }
+  75%  { background-image: url("arxafon7.jpg"); }
+  87.5%{ background-image: url("arxafon8.jpg"); }
+  100% { background-image: url("arxafon1.jpg"); }
+}
+/* duyme deseni*/
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+}
+
+.buttons a {
+  text-decoration: none;
+  text-align: center;
+  border: 3px solid hsl(0, 0%, 100%, 0.3);
+  background: hsl(0, 0%, 100%, 0.2);
+  backdrop-filter: blur(2px);
+  box-shadow: inset 0 0 8px 1px hsl(0, 0%, 100% 0.3);
+  padding: 15px;
+  border-radius: 15px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.95);
+  
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    0 0 6px rgba(0, 0, 0, 0.3);
+  
+  text-align: center;
+  
+}
+
+.buttons a:hover {
+  transform: translateY(-3px);
+}
+/* dil desteyi*/
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px;
+}
+#langSelect {
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+/*card*/
+.scene {
+    width: 100vw;
+    height: 55vh;
+    perspective: 2000px;
+  }
+
+  .album {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.1s linear;
+  }
+
+  .photo {
+    position: absolute;
+    width: 200px;
+    height: 280px;
+    left: 50%;
+    top: 50%;
+    transform-style: preserve-3d;
+    transform: translate(-50%, -50%) rotateY(var(--r)) translateZ(420px);
+    transition: transform 0.6s;
+  }
+
+  .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 18px;
+    box-shadow: 0 20px 40px rgba(250,0,100,0.4);
+  }
+
+  .photo.tap {
+  animation: tapAnim 0.8s ease;
+}
+
+@keyframes tapAnim {
+  0%   { transform: translate(-50%, -50%) rotateY(var(--r)) translateZ(420px) scale(1); }
+  50%  { transform: translate(-50%, -50%) rotateY(var(--r)) translateZ(460px) scale(1.1); }
+  100% { transform: translate(-50%, -50%) rotateY(var(--r)) translateZ(420px) scale(1); }
+}
+.letter {
+  position: fixed;
+  left: 0;
+  bottom: -100%;
+  width: 90%;
+  height: 35%;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    0 0 6px rgba(0, 0, 0, 0.3);
+
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(12px);
+
+  color: #fff;
+  padding: 20px;
+  font-size: 18px;
+  line-height: 1.5;
+  transition: 0.6s;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.photo.dim img {
+  filter: brightness(0.9);
+  transition: 1s;
+}
+
+  .letter.show {
+    bottom: 0;
+  }
+  .photo.heartbeat img {
+  animation: heartBeat 0.8s infinite;
+}
+
+@keyframes heartBeat {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(1.08); }
+  40%  { transform: scale(1); }
+  60%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+.photo {
+  position: absolute;
+  width: 200px;
+  height: 280px;
+  left: 50%;
+  top: 50%;
+  transform-style: preserve-3d;
+  transform: translate(-50%, -50%) rotateY(var(--r)) translateZ(420px);
+  transition: transform 1s;
+  overflow: hidden;
+}
+
+.photo video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: 5s;
+  border-radius: 18px;
+}
+
+.photo.showVideo video {
+  opacity: 1;
+}
+
+.text {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    0 0 6px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  opacity: 1;
+  transition: all 0.8s ease;
+  padding: 10px 2px;
+  border-radius: 10px;
+}
+
+.photo:hover .text {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+}
+</style>
+<body>
+    <!-- 5 dil desteyi -->
+  <div class="top-bar">
+    <select id="langSelect">
+      <option value="az">🇦🇿</option>
+      <option value="en">🇬🇧</option>
+      <option value="ru">🇷🇺</option>
+      <option value="ge">🇬🇪</option>
+      <option value="hy">🇦🇲</option>
+    </select>
+  </div>
+  <!-- duymeler -->
+  <div class="buttons">
+  <a id="backbtn" href="index.html">GERI</a>
+  </div>
+  <!--card -->
+  <div class="scene">
+  <div class="album" id="album">
+    
+    <div class="photo" data-i="1" >
+      <img src="suveod.jpg">
+      <div class="text" id="card1">Su və Odla Bağlı Adətlər</div>
+      <video class="video" src="suveod.mp4" muted loop></video>
+      <h4 class="data-text" id="text1" ></h4>
+    </div>
+    
+    <div class="photo" data-i="2">
+      <img src="sufre.jpg">
+    <div class="text" id="card2">Süfrə və Mətbəx Ənənələri</div>
+      <video class="video" src="sufre.mp4" muted loop></video>
+      <h4 class="data-text" id="text2" ></h4>
+
+    </div>
+    
+    <div class="photo" data-i="3">
+      <img src="oyun.jpg">
+      <div class="text" id="card3" >Oyunlar və Əyləncələr</div>
+      <video class="video" src="oyun.mp4" muted loop></video>
+      <h4 class="data-text" id="text3" ></h4>
+
+      </div>
+    
+    <div class="photo" data-i="4">
+      <img src="fal.jpg">
+      <div class="text" id="card4">Fal və İnamlar</div>
+      <video class="video" src="fal.mp4" muted loop></video>
+      <h4 class="data-text" id="text4" ></h4>
+
+    </div>
+    
+    <div class="photo" data-i="5">
+      <img src="baris.jpg">
+      <div class="text" id="card5" >Küsülülərin barışması</div>
+      <video class="video" src="baris.mp4" muted loop></video>
+      <h4 class="data-text" id="text5" ></h4>
+
+    </div>
+    
+    
+    </div>
+    </div>
+  
+  <div class="letter" id="letter"></div>
+  
+</div>
+
+  <script>
+  const translations = {
+  az: {
+    back: "GERI",
+    
+    card1: "Su və Odla Bağlı Adətlər",
+    card2: "Süfrə və Mətbəx Ənənələri",
+    card3: "Oyunlar və Əyləncələr",
+    card4: "Fal və İnamlar",
+    card5: "Küsülülərin barışması",
+    
+    text1: "Tonqaldan tullanmaq: 'Ağırlığım-uğurluğum bu odda yansın' deyərək tonqalın üzərindən atlanmaq insanın ruhən təmizlənməsini simvolizə edir. Od heç vaxt su ilə söndürülməz, özü sönməlidir. Sübh tezdən su üstündən atlanmaq və əl-üz yumaq isə təmizlik və aydınlıq gətirir.",
+    
+    text2: "Yeddi nemət: Süfrədə S hərfi ilə başlayan 7 nemət olmalıdır (səməni, süd, sumaq, sirkə, su, sarımsaq, səbzə). Səməni yazın və həyatın simvoludur. Xonça bəzənir və ailə üzvlərinin sayı qədər şam yandırılır.",
+    
+    text3: "Kosa və Keçəl: Qış və baharın mübarizəsini göstərir, sonda bahar qalib gəlir. Yumurta döyüşdürmək həyatın başlanğıcını simvolizə edir. Papaqatma isə uşaqların ən sevdiyi bayram oyunudur.",
+    
+    text4: "Qulaq falı: Qonşunun qapısında eşidilən ilk söz taleyi göstərir. Üzük falı isə gələcək haqqında işarələr verir. Buna görə bayramda yalnız xoş sözlər danışılır.",
+    
+    text5: "Novruzda barışmaq ən vacib adətdir. Küsülü qalmaq pis sayılır. İnsanlar bir-birini bağışlayır və yaxınlarını ziyarət edir."
+  },
+  
+  en: {
+    back: "BACK",
+    
+    card1: "Water and Fire Traditions",
+    card2: "Table and Kitchen Traditions",
+    card3: "Games and Entertainment",
+    card4: "Fortunes and Beliefs",
+    card5: "Reconciliation",
+    
+    text1: "Jumping over fire symbolizes spiritual cleansing. People say 'let my troubles burn in this fire.' Fire should never be extinguished with water. Washing with flowing water in the morning brings purity and clarity.",
+    
+    text2: "Seven foods: The table must include 7 items starting with 'S'. Samani symbolizes spring and life. A decorated tray is placed with candles for each family member.",
+    
+    text3: "Kosa and Kechal represent winter and spring. Spring always wins. Egg fighting symbolizes life. 'Papagatma' is a fun tradition where kids collect sweets.",
+    
+    text4: "Listening fortune: The first word heard at a door predicts fate. Ring fortune is used to guess the future. Only positive words should be spoken.",
+    
+    text5: "Reconciliation is the most important tradition of Novruz. People forgive each other and visit relatives."
+  },
+  
+  ru: {
+    back: "НАЗАД",
+    
+    card1: "Традиции воды и огня",
+    card2: "Праздничный стол",
+    card3: "Игры и развлечения",
+    card4: "Гадания и поверья",
+    card5: "Примирение",
+    
+    text1: "Прыжки через огонь символизируют очищение души. Люди говорят: 'пусть мои беды сгорят'. Огонь нельзя тушить водой. Умывание водой утром приносит чистоту.",
+    
+    text2: "Семь блюд: На столе должно быть 7 продуктов на букву 'С'. Самани символизирует весну. Зажигаются свечи по числу членов семьи.",
+    
+    text3: "Коса и Кечель символизируют борьбу зимы и весны. Весна побеждает. Бой яйцами — символ жизни. Папагатма — сбор сладостей.",
+    
+    text4: "Гадание у двери: первое услышанное слово предсказывает судьбу. Гадание с кольцом показывает будущее.",
+    
+    text5: "Примирение — главный обычай Новруза. Люди прощают друг друга и навещают близких."
+  },
+  
+  ge: {
+    back: "უკან",
+    
+    card1: "წყლისა და ცეცხლის ტრადიციები",
+    card2: "სუფრა და სამზარეულო",
+    card3: "თამაშები და გართობა",
+    card4: "გადაწყვეტილებები და რწმენა",
+    card5: "შერიგება",
+    
+    text1: "ცეცხლზე გადახტომა სულიერ გაწმენდას ნიშნავს. წყლით ჩაქრობა არ შეიძლება. დილით წყლით დაბანა სისუფთავეს მოაქვს.",
+    
+    text2: "სუფრაზე უნდა იყოს 7 პროდუქტი. სემენი გაზაფხულის სიმბოლოა. ანთებენ სანთლებს ოჯახის წევრების მიხედვით.",
+    
+    text3: "კოსა და კეჩელი ზამთარსა და გაზაფხულს აღნიშნავს. კვერცხის თამაში სიცოცხლის სიმბოლოა.",
+    
+    text4: "კარის მოსმენა ბედისწერას აჩვენებს. ბეჭდის თამაში მომავლის ნიშნებია.",
+    
+    text5: "შერიგება ნოვრუზის მთავარი ტრადიციაა. ადამიანები პატიობენ ერთმანეთს."
+  },
+  
+  hy: {
+    back: "ՀԵՏ",
+    
+    card1: "Ջրի և կրակի ավանդույթներ",
+    card2: "Տոնական սեղան",
+    card3: "Խաղեր և զվարճանք",
+    card4: "Գուշակություններ",
+    card5: "Հաշտություն",
+    
+    text1: "Կրակի վրայից ցատկելը մաքրում է հոգին։ Կրակը ջրով չեն հանգցնում։ Առավոտյան ջրով լվանալը մաքրություն է բերում։",
+    
+    text2: "Սեղանին պետք է լինի 7 ուտեստ։ Սամանին գարնան նշան է։ Մոմեր են վառում ընտանիքի անդամների համար։",
+    
+    text3: "Կոսան և Քեչելը ներկայացնում են ձմեռը և գարունը։ Ձվախաղը կյանքի խորհրդանիշ է։",
+    
+    text4: "Դռան մոտ լսելը ճակատագիր է ցույց տալիս։ Մատանու գուշակությունը ապագայի նշան է։",
+    
+    text5: "Հաշտությունը Նովրուզի գլխավոր ավանդույթն է։ Մարդիկ ներողություն են խնդրում։"
+  }
+};
+
+
+  
+    const savedLang = localStorage.getItem("lang") || "az";
+document.getElementById("langSelect").value = savedLang;
+applyLanguage(savedLang);
+
+document.getElementById("langSelect").addEventListener("change", function(){
+  const selectedLang = this.value;
+  localStorage.setItem("lang", selectedLang);
+  applyLanguage(selectedLang);
+});
+function applyLanguage(lang) {
+  if (!translations[lang]) return;
+  
+  document.getElementById("backbtn").textContent = translations[lang].back;
+  document.getElementById("text1").textContent = translations[lang].text1;
+  document.getElementById("text2").textContent = translations[lang].text2;
+  document.getElementById("text3").textContent = translations[lang].text3;
+  document.getElementById("text4").textContent = translations[lang].text4;
+  document.getElementById("text5").textContent = translations[lang].text5;
+  document.getElementById("card1").textContent = translations[lang].card1;
+  document.getElementById("card2").textContent = translations[lang].card2;
+  document.getElementById("card3").textContent = translations[lang].card3;
+  document.getElementById("card4").textContent = translations[lang].card4;
+  document.getElementById("card5").textContent = translations[lang].card5;
+
+
+
+  
+  
+  document.documentElement.lang = lang;
+}
+
+/* card*/
+  const album = document.getElementById("album");
+  const photos = document.querySelectorAll(".photo");
+  const letter = document.getElementById("letter");
+
+  let rotateY = 0;
+  let scale = 1;
+
+  photos.forEach((p, i) => {
+    p.style.setProperty("--r", `${i * (360 / photos.length)}deg`);
+  });
+
+  let startX = 0;
+
+  document.addEventListener("touchstart", e => {
+    if (e.touches.length === 1) {
+      startX = e.touches[0].clientX;
+    }
+  });
+
+  document.addEventListener("touchmove", e => {
+    if (e.touches.length === 1) {
+      let dx = e.touches[0].clientX - startX;
+      rotateY += dx * 0.4;
+      album.style.transform = `rotateY(${rotateY}deg) scale(${scale})`;
+      startX = e.touches[0].clientX;
+    }
+  });
+  let lastDist = null;
+
+  document.addEventListener("touchmove", e => {
+    if (e.touches.length === 2) {
+      let dx = e.touches[0].clientX - e.touches[1].clientX;
+      let dy = e.touches[0].clientY - e.touches[1].clientY;
+      let dist = Math.hypot(dx, dy);
+
+      if (lastDist) {
+        scale += (dist - lastDist) * 0.002;
+        scale = Math.min(Math.max(scale, 0.6), 2);
+        album.style.transform = `rotateY(${rotateY}deg) scale(${scale})`;
+      }
+      lastDist = dist;
+    }
+  });
+  document.addEventListener("touchend", () => lastDist = null);
+
+let click = 0;
+
+ photos.forEach(photo => {
+  
+  photo.addEventListener("touchend", () => {
+    
+    let now = Date.now();
+    let diff =  click;
+    
+    if (diff < 300) {
+      
+      if (letter.classList.contains("show")) {
+        
+        letter.classList.remove("show");
+        
+        photos.forEach(p => {
+          p.classList.remove("dim");
+          p.classList.remove("showVideo");
+          
+          let v = p.querySelector("video");
+          if (v) v.pause();
+        });
+        
+      } else {
+        
+        photo.classList.add("active");
+        photo.classList.add("dim");
+        photo.classList.add("showVideo");
+        
+        let vid = photo.querySelector("video");
+        if (vid) {
+          vid.currentTime = 0;
+          vid.play();
+        }
+        
+        let text = photo.querySelector(".data-text").innerText;
+letter.innerText = text;
+        letter.classList.add("show");
+
+        setTimeout(() => photo.classList.remove("active"), 1000);
+      }
+      
+    }
+    else {
+      
+      if (!letter.classList.contains("show")) {
+        photo.classList.add("tap");
+        setTimeout(() => photo.classList.remove("tap"), 600);
+      }
+      
+    }
+    
+    lastTap = now;
+  });
+  
+});
+
+
+let holdTimer;
+
+photos.forEach(photo => {
+  
+  
+  photo.addEventListener("touchend", () => {
+    clearTimeout(holdTimer);
+    photo.classList.remove("heartbeat");
+    heartSound.pause();
+  });
+  
+});
+
+  </script>
+</body>
+
+</html>

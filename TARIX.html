@@ -1,0 +1,278 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+<style>
+/* arxa fon*/
+  body {
+    font-family: sans-serif;
+    margin:0;
+  min-height:100vh;
+  background: linear-gradient(
+    270deg,
+    #0f7a3d,   /* yaşıl - səməni */
+    #d62828,   /* qırmızı - od */
+    #f4a261,   /* narıncı/günəş */
+    #2a9df4    /* mavi - bahar səması */
+  );
+
+  background-size: 800% 800%;
+  animation: novruzBg 40s ease infinite;
+  }
+  @keyframes novruzBg{
+  0%{ background-position:0% 50%; }
+  50%{ background-position:100% 50%; }
+  100%{ background-position:0% 50%; }
+}
+
+/* duyme deseni*/
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+}
+
+.buttons a {
+  text-decoration: none;
+  text-align: center;
+  border: 3px solid hsl(0, 0%, 100%, 0.3);
+  background: hsl(0, 0%, 100%, 0.2);
+  backdrop-filter: blur(2px);
+  box-shadow: inset 0 0 8px 1px hsl(0, 0%, 100% 0.3);
+  padding: 15px;
+  border-radius: 15px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.95);
+  
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    0 0 6px rgba(0, 0, 0, 0.3);
+  
+  text-align: center;
+  
+}
+.buttons a:hover {
+  transform: translateY(-3px);
+}
+/* dil desteyi*/
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px;
+}
+#langSelect {
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+/*sekiller*/
+.images{
+  display: flex;
+  flex-direction: column;
+}
+
+.image-box{
+  position: relative;
+}
+
+.images video{
+  width: 100%;
+  height: 100svh;
+  object-fit: cover;
+  position: sticky;
+  top: 0;
+  border-radius: 12px;
+  box-shadow:
+  -8px -8px 35px rgba(34,139,34,0.8),   /* səməni */
+   8px  8px 35px rgba(255,69,0,0.8),    /* od */
+  -12px 12px 40px rgba(255,215,0,0.7),  /* günəş */
+   12px -12px 40px rgba(30,144,255,0.7);/* bahar səması */
+  animation: shrink linear both;
+  animation-timeline: view();
+  animation-range: cover 0% cover 100%;
+}
+
+/* TEXT */
+.image-box h4{
+  position: absolute;
+  bottom: 0px;
+  left: 25px;
+  color: white;
+  font-size: 24px;
+  text-shadow: 0 0 14px black;
+}
+
+@keyframes shrink{
+  from { 
+    opacity: 1;
+    transform: scale(1);}
+  to { 
+    opacity: 0.9;
+    transform: scale(0.8);}
+}
+</style>
+<body>
+    <!-- 5 dil desteyi -->
+  <div class="top-bar">
+    <select id="langSelect">
+      <option value="az">🇦🇿</option>
+      <option value="en">🇬🇧</option>
+      <option value="ru">🇷🇺</option>
+      <option value="ge">🇬🇪</option>
+      <option value="hy">🇦🇲</option>
+    </select>
+  </div>
+  <!-- duymeler -->
+  <div class="buttons">
+    <a id="backbtn" href="index.html" >GERI</a>
+  </div>
+  <!--sekiller -->
+  <div class="images">
+  
+  <div class="image-box" >
+     <video src="tarix1.mp4" autoplay muted loop playsinline></video>
+    <h4 id="text1">Novruz bayramı bəşəriyyətin ən qədim sivilizasiyalarından süzülüb gələn, təbiətin oyanışını və yeni ilin başlanğıcını müjdələyən möhtəşəm bir mədəni irsdir.</h4>
+  </div>
+  
+  <div class="image-box">
+    <video src="tarix2.mp4" autoplay muted loop playsinline></video>
+    <h4 id="text2">Tarixi kökləri 3000 ildən çox bir dövrü əhatə edən bu bayram, qədim Zərdüştlük inancında xeyirin şər üzərində qələbəsi və kainatın nizamlanması kimi simvolizə olunmuşdur.</h4>
+  </div>
+  
+  <div class="image-box" >
+    <video src="tarix3.mp4" autoplay muted loop playsinline></video>
+    <h4 id="text3">Şərq ədəbiyyatında və əfsanələrində, xüsusən "Şahnamə"də Novruzun yaranması əfsanəvi hökmdar Cəmşidin taxta çıxması və kainatın nura boyanması ilə əlaqələndirilir. </h4>
+  </div>
+  
+  <div class="image-box" >
+    <video src="tarix4.mp4" autoplay muted loop playsinline></video>
+    <h4 id="text4">Türk mifologiyasında isə bu gün Ergenekondan çıxış — azadlığa və yeni həyata qovuşma günü kimi xüsusi rəmzi məna daşıyır.</h4>
+  </div>
+  <div class="image-box" >
+  <video src="tarix5.mp4" autoplay muted loop playsinline></video>
+  <h4 id="text5">Elmi cəhətdən yaz gecə-gündüz bərabərliyinə əsaslanan Novruz, orta əsrlərdə Ömər Xəyyam kimi dühaların hazırladığı "Cəlali təqvimi" ilə dəqiqləşdirilmiş və astronomik bir hadisə kimi qəbul edilmişdir.</h4>
+</div>
+<div class="image-box" >
+  <video src="tarix6.mp4" autoplay muted loop playsinline></video>
+  <h4 id="text6">Tarix boyu müxtəlif imperiyalar dövründə dövlət səviyyəsində qeyd olunan bu bayram, müəyyən dövrlərdə qadağalarla üzləşsə də, xalqın yaddaşında silinməz iz qoyaraq günümüzə qədər yaşamışdır.</h4>
+</div>
+<div class="image-box" >
+  <video src="tarix7.mp4" autoplay muted loop playsinline></video>
+  <h4 id="text7">Bu gün Novruz sadəcə bir xalqın deyil, 300 milyondan çox insanın qeyd etdiyi beynəlxalq bir fenomendir. </h4>
+</div>
+<div class="image-box" >
+  <video src="tarix8.mp4" autoplay muted loop playsinline></video>
+  <h4 id="text8">2009-cu ildə YUNESKO-nun Qeyri-maddi Mədəni İrs siyahısına daxil edilməsi və BMT tərəfindən rəsmən tanınması bu bayramın bəşəri dəyərlərini təsdiq edir.</h4>
+</div>
+<div class="image-box">
+  <video src="tarix9.mp4" autoplay muted loop playsinline></video>
+  <h4 id="text9">Su, Od, Yel və Torpaq çərşənbələri ilə hazırlığına başlanılan, səməni, şirniyyatlar və tonqal adətləri ilə zənginləşən Novruz, sülhün, birliyin və təbiətlə insanın vəhdətinin ən gözəl ifadəsidir.</h4>
+</div>
+  
+</div>
+  <div class="buttons">
+    <a id="backbtn" href="index.html" >GERI</a>
+  </div>
+
+  <script>
+  const translations = {
+  az: {
+    back: "GERI",
+    text1: "Novruz bayramı bəşəriyyətin ən qədim sivilizasiyalarından süzülüb gələn, təbiətin oyanışını və yeni ilin başlanğıcını müjdələyən möhtəşəm bir mədəni irsdir.",
+    text2: "Tarixi kökləri 3000 ildən çox bir dövrü əhatə edən bu bayram, qədim Zərdüştlük inancında xeyirin şər üzərində qələbəsi və kainatın nizamlanması kimi simvolizə olunmuşdur.",
+    text3: "Şərq ədəbiyyatında və əfsanələrində, xüsusən 'Şahnamə'də Novruzun yaranması əfsanəvi hökmdar Cəmşidin taxta çıxması və kainatın nura boyanması ilə əlaqələndirilir.",
+    text4: "Türk mifologiyasında isə bu gün Ergenekondan çıxış — azadlığa və yeni həyata qovuşma günü kimi xüsusi rəmzi məna daşıyır.",
+    text5: "Elmi cəhətdən yaz gecə-gündüz bərabərliyinə əsaslanan Novruz, orta əsrlərdə Ömər Xəyyam kimi dühaların hazırladığı 'Cəlali təqvimi' ilə dəqiqləşdirilmiş və astronomik bir hadisə kimi qəbul edilmişdir.",
+    text6: "Tarix boyu müxtəlif imperiyalar dövründə dövlət səviyyəsində qeyd olunan bu bayram, müəyyən dövrlərdə qadağalarla üzləşsə də, xalqın yaddaşında silinməz iz qoyaraq günümüzə qədər yaşamışdır.",
+    text7: "Bu gün Novruz sadəcə bir xalqın deyil, 300 milyondan çox insanın qeyd etdiyi beynəlxalq bir fenomendir.",
+    text8: "2009-cu ildə YUNESKO-nun Qeyri-maddi Mədəni İrs siyahısına daxil edilməsi və BMT tərəfindən rəsmən tanınması bu bayramın bəşəri dəyərlərini təsdiq edir.",
+    text9: "Su, Od, Yel və Torpaq çərşənbələri ilə hazırlığına başlanılan, səməni, şirniyyatlar və tonqal adətləri ilə zənginləşən Novruz, sülhün, birliyin və təbiətlə insanın vəhdətinin ən gözəl ifadəsidir."
+  },
+  
+  en: {
+    back: "BACK",
+    text1: "Novruz is a magnificent cultural heritage that comes from the oldest civilizations of humanity and heralds the awakening of nature and the beginning of a new year.",
+    text2: "With historical roots spanning more than 3000 years, this holiday was symbolized in the ancient Zoroastrian belief as the victory of good over evil and the ordering of the universe.",
+    text3: "In Eastern literature and legends, especially in the 'Shahnameh', the origin of Novruz is associated with the legendary ruler Jamshid ascending the throne and the universe being filled with light.",
+    text4: "In Turkic mythology, this day symbolizes the exit from Ergenekon — a special symbol of freedom and the beginning of a new life.",
+    text5: "Scientifically based on the spring equinox, Novruz was refined in the Middle Ages through the 'Jalali calendar' prepared by geniuses such as Omar Khayyam and accepted as an astronomical event.",
+    text6: "Throughout history this holiday was celebrated at the state level during different empires, and although it faced bans in certain periods, it survived in the memory of the people until today.",
+    text7: "Today Novruz is not only the holiday of one nation but an international phenomenon celebrated by more than 300 million people.",
+    text8: "Its inclusion in UNESCO's Intangible Cultural Heritage list in 2009 and its official recognition by the UN confirm the universal values of this celebration.",
+    text9: "Beginning with the Water, Fire, Wind and Earth Wednesdays and enriched with traditions such as samani, sweets and bonfires, Novruz is the most beautiful expression of peace, unity and harmony between humans and nature."
+  },
+  
+  ru: {
+    back: "НАЗАД",
+    text1: "Новруз — это великолепное культурное наследие, пришедшее из древнейших цивилизаций человечества и возвещающее пробуждение природы и начало нового года.",
+    text2: "Исторические корни этого праздника насчитывают более 3000 лет. В древней зороастрийской вере он символизировал победу добра над злом и установление гармонии во вселенной.",
+    text3: "В восточной литературе и легендах, особенно в «Шахнаме», возникновение Новруза связывается с восшествием легендарного правителя Джамшида на трон и озарением мира светом.",
+    text4: "В тюркской мифологии этот день символизирует выход из Эргенекона — символ свободы и начала новой жизни.",
+    text5: "С научной точки зрения Новруз основан на весеннем равноденствии. В средние века он был уточнён с помощью «Джалалийского календаря», созданного такими гениями, как Омар Хайям.",
+    text6: "На протяжении истории этот праздник отмечался на государственном уровне в разных империях и, несмотря на запреты в некоторые периоды, сохранился в памяти народа до наших дней.",
+    text7: "Сегодня Новруз — это международное явление, которое отмечают более 300 миллионов человек.",
+    text8: "Включение в список нематериального культурного наследия ЮНЕСКО в 2009 году и официальное признание ООН подтверждают его общечеловеческую ценность.",
+    text9: "Начинающийся с Водной, Огненной, Ветровой и Земляной среды и украшенный традициями сэмэни, сладостей и костров, Новруз является прекрасным выражением мира, единства и гармонии человека с природой."
+  },
+  
+  ge: {
+    back: "უკან",
+    text1: "ნოვრუზი არის კაცობრიობის უძველესი ცივილიზაციებიდან მომდინარე დიდი კულტურული მემკვიდრეობა, რომელიც ბუნების გაღვიძებასა და ახალი წლის დაწყებას აღნიშნავს.",
+    text2: "ამ დღესასწაულის ისტორიული ფესვები 3000 წელზე მეტ პერიოდს მოიცავს და ძველ ზოროასტრიზმში სიკეთის ბოროტებაზე გამარჯვებასა და სამყაროს წესრიგს სიმბოლურად აღნიშნავდა.",
+    text3: "აღმოსავლურ ლიტერატურასა და ლეგენდებში, განსაკუთრებით „შაჰნამეში“, ნოვრუზის წარმოშობა უკავშირდება ლეგენდარული მეფე ჯამშიდის ტახტზე ასვლასა და სამყაროს სინათლით გაბრწყინებას.",
+    text4: "თურქულ მითოლოგიაში ეს დღე აღნიშნავს ერგენეკონიდან გამოსვლას — თავისუფლებისა და ახალი ცხოვრების სიმბოლოს.",
+    text5: "მეცნიერულად ნოვრუზი გაზაფხულის ბუნიობას ეფუძნება და შუა საუკუნეებში ომარ ხაიამის მიერ შექმნილი „ჯალალის კალენდრით“ დაზუსტდა.",
+    text6: "ისტორიის განმავლობაში ეს დღესასწაული სხვადასხვა იმპერიაში სახელმწიფო დონეზე აღინიშნებოდა და მიუხედავად გარკვეული აკრძალვებისა ხალხის მეხსიერებაში დღემდე შენარჩუნდა.",
+    text7: "დღეს ნოვრუზი არა მხოლოდ ერთი ხალხის დღესასწაულია, არამედ საერთაშორისო მოვლენაა, რომელსაც 300 მილიონზე მეტი ადამიანი აღნიშნავს.",
+    text8: "2009 წელს იუნესკოს არამატერიალური კულტურული მემკვიდრეობის სიაში შეტანა და გაეროს მიერ ოფიციალურად აღიარება ამ დღესასწაულის უნივერსალურ მნიშვნელობას ადასტურებს.",
+    text9: "წყლის, ცეცხლის, ქარის და მიწის ოთხშაბათებით დაწყებული და სემენის, ტკბილეულისა და კოცონის ტრადიციებით გამდიდრებული ნოვრუზი მშვიდობისა და ბუნებასთან ადამიანის ერთობის ლამაზი სიმბოლოა."
+  },
+  
+  hy: {
+    back: "ՀԵՏ",
+    text1: "Նովրուզը մարդկության ամենահին քաղաքակրթություններից եկած հիանալի մշակութային ժառանգություն է, որը խորհրդանշում է բնության զարթոնքը և նոր տարվա սկիզբը։",
+    text2: "Այս տոնի պատմական արմատները ավելի քան 3000 տարվա պատմություն ունեն և հին զրադաշտական հավատքում խորհրդանշել են բարու հաղթանակը չարի նկատմամբ և տիեզերքի կարգավորումը։",
+    text3: "Արևելյան գրականության և լեգենդների մեջ, հատկապես «Շահնամե»-ում, Նովրուզի ծագումը կապվում է լեգենդար թագավոր Ջամշիդի գահ բարձրանալու և աշխարհի լուսավորվելու հետ։",
+    text4: "Թուրքական դիցաբանության մեջ այս օրը խորհրդանշում է Էրգենեկոնից դուրս գալը՝ ազատության և նոր կյանքի սկիզբը։",
+    text5: "Գիտականորեն Նովրուզը հիմնված է գարնանային գիշերահավասարի վրա և միջնադարում ճշգրտվել է Օմար Խայամի ստեղծած «Ջալալի օրացույցով»։",
+    text6: "Պատմության ընթացքում այս տոնը նշվել է պետական մակարդակով տարբեր կայսրություններում և չնայած որոշ ժամանակների արգելքներին պահպանվել է ժողովրդի հիշողության մեջ։",
+    text7: "Այսօր Նովրուզը ոչ միայն մեկ ժողովրդի տոն է, այլ միջազգային երևույթ, որը նշում է ավելի քան 300 միլիոն մարդ։",
+    text8: "2009 թվականին ՅՈՒՆԵՍԿՕ-ի ոչ նյութական մշակութային ժառանգության ցուցակում ընդգրկվելը և ՄԱԿ-ի կողմից պաշտոնապես ճանաչվելը հաստատում են այս տոնի համամարդկային արժեքը։",
+    text9: "Ջրի, Կրակի, Քամու և Հողի չորեքշաբթիներով սկսվող և սեմենի, քաղցրավենիքի ու խարույկների ավանդույթներով հարստացված Նովրուզը խաղաղության և մարդու ու բնության միասնության գեղեցիկ խորհրդանիշ է։"
+  }
+};
+  
+    const savedLang = localStorage.getItem("lang") || "az";
+document.getElementById("langSelect").value = savedLang;
+applyLanguage(savedLang);
+
+document.getElementById("langSelect").addEventListener("change", function(){
+  const selectedLang = this.value;
+  localStorage.setItem("lang", selectedLang);
+  applyLanguage(selectedLang);
+});
+function applyLanguage(lang) {
+  if (!translations[lang]) return;
+  
+  document.getElementById("backbtn").textContent = translations[lang].back;
+  document.getElementById("text1").textContent = translations[lang].text1;
+  document.getElementById("text2").textContent = translations[lang].text2;
+  document.getElementById("text3").textContent = translations[lang].text3;
+  document.getElementById("text4").textContent = translations[lang].text4;
+  document.getElementById("text5").textContent = translations[lang].text5;
+  document.getElementById("text6").textContent = translations[lang].text6;
+  document.getElementById("text7").textContent = translations[lang].text7;
+  document.getElementById("text8").textContent = translations[lang].text8;
+  document.getElementById("text9").textContent = translations[lang].text9;
+  
+  
+  document.documentElement.lang = lang;
+}
+  </script>
+</body>
+
+</html>

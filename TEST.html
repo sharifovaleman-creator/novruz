@@ -1,0 +1,505 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+<style>
+/* arxa fon*/
+  body {
+    font-family: sans-serif;
+    background-attachment: fixed;
+    margin:0;
+  min-height:100vh;
+  background: linear-gradient(
+    270deg,
+    #0f7a3d,   /* yaşıl - səməni */
+    #d62828,   /* qırmızı - od */
+    #f4a261,   /* narıncı/günəş */
+    #2a9df4    /* mavi - bahar səması */
+  );
+
+  background-size: 800% 800%;
+  animation: novruzBg 40s ease infinite;
+  }
+  @keyframes novruzBg{
+  0%{ background-position:0% 50%; }
+  50%{ background-position:100% 50%; }
+  100%{ background-position:0% 50%; }
+}
+/* duyme deseni*/
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+}
+
+.buttons a {
+  text-decoration: none;
+  text-align: center;
+  border: 3px solid hsl(0, 0%, 100%, 0.3);
+  background: hsl(0, 0%, 100%, 0.2);
+  backdrop-filter: blur(2px);
+  box-shadow: inset 0 0 8px 1px hsl(0, 0%, 100% 0.3);
+  padding: 15px;
+  border-radius: 15px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.95);
+  
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    0 0 6px rgba(0, 0, 0, 0.3);
+  
+  text-align: center;
+  
+}
+.buttons a:hover {
+  transform: translateY(-3px);
+}
+/* dil desteyi*/
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px;
+}
+#langSelect {
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+/* sinaq*/
+.container {
+  background: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  max-width: 300px;
+  width: 100%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    text-align: center;
+    color: #E67E22;
+  }
+  .question {
+    margin-bottom: 20px;
+  }
+  .options label {
+    display: block;
+    margin: 5px 0;
+    cursor: pointer;
+  }
+  button {
+    background-color: #E67E22;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  button:hover {
+    background-color: #d96a00;
+  }
+  #result {
+    margin-top: 20px;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
+  }
+</style>
+<body>
+    <!-- 5 dil desteyi -->
+  <div class="top-bar">
+    <select id="langSelect">
+      <option value="az">🇦🇿</option>
+      <option value="en">🇬🇧</option>
+      <option value="ru">🇷🇺</option>
+      <option value="ge">🇬🇪</option>
+      <option value="hy">🇦🇲</option>
+    </select>
+  </div>
+  
+  <div class="buttons">
+  <a id="backbtn" href="index.html">GERI</a>
+</div>
+  
+  <!-- sinaq -->
+  <div class="container">
+  <h1 id="test" >Novruz Testi</h1>
+  <div id="quiz"></div>
+  <button  id="submit">Yoxla</button>
+  <div id="result"></div>
+</div>
+  
+  <!-- duymeler -->
+  <div class="buttons">
+    <a id="backbtn" href="index.html">GERI</a>
+  </div>
+  <script>
+  const translations = {
+  az: {
+    back: "GERI",
+    test: "Sınaq",
+    submit: "Bitir",
+    result: "Nəticə"
+  },
+  en: {
+    back: "BACK",
+    test: "Test",
+    submit: "Submit",
+    result: "Result"
+  },
+  ru: {
+    back: "НАЗАД",
+    test: "Тест",
+    submit: "Отправить",
+    result: "Результат"
+  },
+  ge: {
+    back: "უკან",
+    test: "ტესტი",
+    submit: "დასრულება",
+    result: "შედეგი"
+  },
+  hy: {
+    back: "ՀԵՏ",
+    test: "Թեստ",
+    submit: "Ավարտել",
+    result: "Արդյունք"
+  }
+};
+  
+    const savedLang = localStorage.getItem("lang") || "az";
+document.getElementById("langSelect").value = savedLang;
+applyLanguage(savedLang);
+
+document.getElementById("langSelect").addEventListener("change", function(){
+  const selectedLang = this.value;
+  localStorage.setItem("lang", selectedLang);
+  applyLanguage(selectedLang);
+});
+function applyLanguage(lang) {
+  if (!translations[lang]) return;
+  
+  document.getElementById("backbtn").textContent = translations[lang].back;
+  document.getElementById("test").textContent = translations[lang].test;
+  document.getElementById("submit").textContent = translations[lang].submit;
+  document.getElementById("result").textContent = translations[lang].result;
+
+
+  
+  
+  document.documentElement.lang = lang;
+}
+
+/*sinaq*/
+const quizTranslations = {
+    az: [
+      { q: "Novruz bayramının tarixi kökləri neçə illik bir dövrü əhatə edir?", options: ["1000 il", "2000 il", "3000 ildən çox"], answer: 2 },
+      { q: "Qədim Zərdüştlük inancında Novruz nəyi simvolizə edirdi?", options: ["Məhsul yığımını", "Xeyirin şər üzərində qələbəsini", "Yağışın yağmasını"], answer: 1 },
+      { q: "“Şahnamə” əsərində Novruzun yaranması hansı hökmdarla əlaqələndirilir?", options: ["Keyqubad", "Cəmşid", "Dara"], answer: 1 },
+      { q: "Türk mifologiyasında Novruz hansı hadisə ilə eyniləşdirilir?", options: ["Ergenekondan çıxış", "Manasın doğulması", "Köroğlunun qayıdışı"], answer: 0 },
+      { q: "Novruz elmi cəhətdən hansı astronomik hadisəyə əsaslanır?", options: ["Yay gün dönümü", "Yaz gecə-gündüz bərabərliyi", "Qışın ortası"], answer: 1 },
+      { q: "Orta əsrlərdə Novruzun vaxtını dəqiqləşdirən 'Cəlali təqvimi'ni kim hazırlayıb?", options: ["Nəsirəddin Tusi", "Ömər Xəyyam", "Əl-Biruni"], answer: 1 },
+      { q: "Novruz neçənci ildə YUNESKO-nun Qeyri-maddi Mədəni İrs siyahısına daxil edilib?", options: ["2001", "2009", "2015"], answer: 1 },
+      { q: "Dünyada təxminən neçə nəfər Novruzu qeyd edir?", options: ["100 milyon", "200 milyon", "300 milyondan çox"], answer: 2 },
+      { q: "Novruza hazırlıq neçə əsas çərşənbə ilə başlayır?", options: ["3", "4", "7"], answer: 1 },
+      { q: "İlk çərşənbə hansıdır?", options: ["Od çərşənbəsi", "Yel çərşənbəsi", "Su çərşənbəsi"], answer: 2 },
+      { q: "Su çərşənbəsinin digər adı nədir?", options: ["Üskü çərşənbə", "Əzəl çərşənbə", "İlaxır çərşənbə"], answer: 1 },
+      { q: "Su çərşənbəsində sübh tezdən nə etmək insanı paklaşdırır?", options: ["Tonqal qalamaq", "Su üstünə getmək", "Səməni əkmək"], answer: 1 },
+      { q: "Od çərşənbəsinin xalq arasındakı adı nədir?", options: ["Üskü çərşənbə", "Hava çərşənbəsi", "Müqəddəs çərşənbə"], answer: 0 },
+      { q: "İnsanlar tonqalın üzərindən atılarkən nə deyirlər?", options: ["'Novruz gəldi, yaz gəldi'", "'Ağırlığım-uğurluğum bu odda yansın'", "'Ocağınız bərəkətli olsun'"], answer: 1 },
+      { q: "Yel çərşənbəsi nəyin oyanışını bildirir?", options: ["Torpağın", "Suyun", "Havanın"], answer: 2 },
+      { q: "Yel çərşənbəsində niyə xoş sözlər demək vacibdir?", options: ["Çünki küləyin onu yayacağına inanılır", "Çünki bərəkət rəmzidir", "Çünki qonşular eşidir"], answer: 0 },
+      { q: "Torpaq çərşənbəsinin digər adı nədir?", options: ["Əzəl çərşənbə", "İlaxır çərşənbə", "Orta çərşənbə"], answer: 1 },
+      { q: "Hansı çərşənbədə ailələr yığılır, papaq atılır və fal açılır?", options: ["Od çərşənbəsi", "Yel çərşənbəsi", "Torpaq çərşənbəsi"], answer: 2 },
+      { q: "Qoğalın forması nəyi təmsil edir?", options: ["Ayı", "Günəşi", "Ulduzu"], answer: 1 },
+      { q: "Qoğalın üzərinə səpilən küncüt nəyin rəmzidir?", options: ["Yağışın", "Günəşin hərarəti və bərəkətin", "Torpağın qatlarının"], answer: 1 },
+      { q: "Şəkərbura hansı göy cisminin simvoludur?", options: ["Günəşin", "Ayın (hilal)", "Veneranın"], answer: 1 },
+      { q: "Şəkərburanın üzərindəki naxışlar nəyi xatırladır?", options: ["Ayın səthindəki izləri", "Yarpaqları", "Dalğaları"], answer: 0 },
+      { q: "Paxlava formasına görə nəyi təmsil edir?", options: ["Ulduzu və ya odu", "Dənizi", "Dağları"], answer: 0 },
+      { q: "Paxlavanın ortasındakı qoz və ya fındıq nəyi simvolizə edir?", options: ["İnsanı", "Kainatın mərkəzini", "Ağacı"], answer: 1 },
+      { q: "Paxlavanın qat-qat quruluşu nəyin göstəricisidir?", options: ["İlin aylarının", "Kainatın dərinliyinin", "Ailə üzvlərinin"], answer: 1 },
+      { q: "Tonqalla bağlı hansı hərəkət qadağan hesab olunur?", options: ["Üzərindən atlanmaq", "Ətrafında rəqs etmək", "Su ilə söndürmək"], answer: 2 },
+      { q: "Bayram süfrəsində 'S' hərfi ilə başlayan neçə nemət olmalıdır?", options: ["5", "7", "12"], answer: 1 },
+      { q: "Aşağıdakılardan hansı '7 S' nemətinə daxil deyil?", options: ["Sumaq", "Səbzə", "Şəkər"], answer: 2 },
+      { q: "Novruz tamaşalarında qışı kim təmsil edir?", options: ["Keçəl", "Kosa", "Bahar qızı"], answer: 1 },
+      { q: "Novruz tamaşalarında baharı kim təmsil edir?", options: ["Kosa", "Keçəl", "Div"], answer: 0 },
+      { q: "Yumurta döyüşdürmək nəyin simvoludur?", options: ["Müharibənin", "Həyatın başlanğıcının", "Gücün"], answer: 1 },
+      { q: "Uşaqların ən sevdiyi Novruz oyunu hansıdır?", options: ["Gizlənqaç", "Papaqatma", "Çovqan"], answer: 1 },
+      { q: "Qulaq falında taleyi nə müəyyən edir?", options: ["Eşidilən ilk söz", "Atılan papaq", "Yeyilən şirniyyat"], answer: 0 },
+      { q: "Gələcək haqqında işarələr verən fal hansıdır?", options: ["Qapıpusma", "Üzük falı", "Su falı"], answer: 1 },
+      { q: "Novruzda ən vacib insani adət hansıdır?", options: ["Yeni paltar almaq", "Barışmaq və küsülü qalmamaq", "Çox yemək"], answer: 1 },
+      { q: "Novruzun ən baş atributu (rəmzi) hansıdır?", options: ["Qoğal", "Səməni", "Şam"], answer: 1 },
+      { q: "Səməninin yaşıl rəngi nəyi bildirir?", options: ["Suyu", "Təbiətin oyanışını", "Odun gücünü"], answer: 1 },
+      { q: "İnanca görə ilin bərəkətli keçməsi nəyə bağlıdır?", options: ["Şamların tez sönməsinə", "Səməninin gur olmasına", "Yağışın yağmasına"], answer: 1 },
+      { q: "Xonçanın mərkəzində nə yerləşdirilir?", options: ["Paxlava", "Səməni", "Ayna"], answer: 1 },
+      { q: "Bayram xonçasındakı şamlar kimin üçün yandırılır?", options: ["Qonaqlar üçün", "Ailə üzvlərinin sayı qədər", "Əcdadların ruhu üçün"], answer: 1 },
+      { q: "Şamlar nəyi simvolizə edir?", options: ["İşıq və istiliyi", "Küləyi", "Səbri"], answer: 0 },
+      { q: "Səbzə '7 S' içində nəyi ifadə edir?", options: ["Turşuluğu", "Göyərtini (yaşıllığı)", "Dadı"], answer: 1 },
+      { q: "Süfrədəki 'Sirkə' nəyin rəmzidir?", options: ["Şirinliyin", "Paklığın və kəskinliyin", "İstiliyin"], answer: 1 },
+      { q: "Novruzda niyə pis söz danışmaq olmaz?", options: ["Qonşular inciyər", "Yel (külək) onu yayıb bədbəxtlik gətirər", "Qanunla qadağandır"], answer: 1 },
+      { q: "Süfrədəki 'Sarımsaq' nəyi təmsil edir?", options: ["Sağlamlığı", "Zənginliyi", "Gözəlliyi"], answer: 0 },
+      { q: "Səməninin ətrafına adətən nə bağlanır?", options: ["Qara lent", "Qırmızı lent", "Yaşıl ip"], answer: 1 },
+      { q: "Novruz bayramı həm də hansı beynəlxalq təşkilat tərəfindən rəsmən tanınır?", options: ["NATO", "BMT (Birləşmiş Millətlər Təşkilatı)", "Avropa Birliyi"], answer: 1 },
+      { q: "Su çərşənbəsində suyun hansı xüsusiyyəti qabardılır?", options: ["Soyuqluğu", "Müqəddəsliyi və həyat mənbəyi olması", "Axıcılığı"], answer: 1 },
+      { q: "Novruz hansı dəyərlərin ən gözəl ifadəsidir?", options: ["Müharibə və qələbənin", "Sülhün, birliyin və təbiətlə vəhdətin", "Tənhalığın"], answer: 1 },
+      { q: "Bayramda yandırılan şamların öz-özünə sönməsi nəyi ifadə edir?", options: ["Bədbəxtliyi", "İşıqlı gələcəyi və bərəkəti", "Qışın qayıtmasını"], answer: 1 }
+    ],
+        en: [
+  { q: "How many years does Novruz have historical roots?", options: ["1000 years", "2000 years", "More than 3000 years"], answer: 2 },
+  { q: "In ancient Zoroastrian belief, what did Novruz symbolize?", options: ["Harvest gathering", "Victory of good over evil", "Rainfall"], answer: 1 },
+  { q: "In the epic 'Shahnameh', Novruz is associated with which ruler?", options: ["Keykubad", "Jamshid", "Dara"], answer: 1 },
+  { q: "In Turkish mythology, Novruz symbolizes which event?", options: ["Emergence from Ergenekon", "Birth of Manas", "Return of Koroglu"], answer: 0 },
+  { q: "Scientifically, Novruz is based on which astronomical event?", options: ["Summer solstice", "Spring equinox", "Middle of winter"], answer: 1 },
+  { q: "Who prepared the 'Jalali calendar' that determined Novruz's date?", options: ["Nasir al-Din Tusi", "Omar Khayyam", "Al-Biruni"], answer: 1 },
+  { q: "In which year was Novruz included in UNESCO's Intangible Cultural Heritage list?", options: ["2001", "2009", "2015"], answer: 1 },
+  { q: "Approximately how many people celebrate Novruz worldwide?", options: ["100 million", "200 million", "More than 300 million"], answer: 2 },
+  { q: "Novruz preparations begin with how many main Chaharshanbe (Wednesdays)?", options: ["3", "4", "7"], answer: 1 },
+  { q: "Which is the first Chaharshanbe?", options: ["Fire Wednesday", "Wind Wednesday", "Water Wednesday"], answer: 2 },
+  { q: "Another name for Water Wednesday?", options: ["Uskü Wednesday", "Primordial Wednesday", "Final Wednesday"], answer: 1 },
+  { q: "What is done early in the morning on Water Wednesday to purify a person?", options: ["Light the bonfire", "Step over water", "Plant wheatgrass"], answer: 1 },
+  { q: "The folk name for Fire Wednesday?", options: ["Uskü Wednesday", "Wind Wednesday", "Sacred Wednesday"], answer: 0 },
+  { q: "What do people say when jumping over the fire?", options: ["'Novruz has come, spring has come'", "'May my weight and fortune burn in this fire'", "'May your hearth be blessed'"], answer: 1 },
+  { q: "Wind Wednesday symbolizes the awakening of what?", options: ["Earth", "Water", "Air"], answer: 2 },
+  { q: "Why is it important to say good words on Wind Wednesday?", options: ["Because the wind spreads them", "Because it's a symbol of prosperity", "Because neighbors hear them"], answer: 0 },
+  { q: "Another name for Earth Wednesday?", options: ["Primordial Wednesday", "Final Wednesday", "Middle Wednesday"], answer: 1 },
+  { q: "On which Chaharshanbe do families gather, throw hats, and do divination?", options: ["Fire Wednesday", "Wind Wednesday", "Earth Wednesday"], answer: 2 },
+  { q: "What does the shape of the Qogal (traditional pastry) represent?", options: ["Moon", "Sun", "Star"], answer: 1 },
+  { q: "What does sesame sprinkled on Qogal symbolize?", options: ["Rain", "Sun’s warmth and fertility", "Layers of the earth"], answer: 1 },
+  { q: "What celestial body does Shekerbura symbolize?", options: ["Sun", "Moon (crescent)", "Venus"], answer: 1 },
+  { q: "The patterns on Shekerbura resemble what?", options: ["Traces on the moon", "Leaves", "Waves"], answer: 0 },
+  { q: "What does the shape of Pakhlava represent?", options: ["Star or fire", "Sea", "Mountains"], answer: 0 },
+  { q: "What does the nut in Pakhlava symbolize?", options: ["Man", "Center of the universe", "Tree"], answer: 1 },
+  { q: "The layered structure of Pakhlava indicates what?", options: ["Months of the year", "Depth of the universe", "Family members"], answer: 1 },
+  { q: "Which action with the bonfire is prohibited?", options: ["Jump over it", "Dance around it", "Put it out with water"], answer: 2 },
+  { q: "How many 'S' items should be on the holiday table?", options: ["5", "7", "12"], answer: 1 },
+  { q: "Which of the following is NOT part of the '7 S'?", options: ["Sumac", "Greens", "Sugar"], answer: 2 },
+  { q: "In Novruz performances, who represents winter?", options: ["Bald man", "Kosa", "Spring girl"], answer: 1 },
+  { q: "In Novruz performances, who represents spring?", options: ["Kosa", "Bald man", "Div"], answer: 0 },
+  { q: "Egg fights symbolize what?", options: ["War", "Beginning of life", "Strength"], answer: 1 },
+  { q: "Children’s favorite Novruz game?", options: ["Hide and seek", "Hitting the hat", "Chovgan"], answer: 1 },
+  { q: "What determines fate in ear divination?", options: ["First word heard", "Thrown hat", "Eaten sweets"], answer: 0 },
+  { q: "Which divination indicates future events?", options: ["Door-knocking", "Ring divination", "Water divination"], answer: 1 },
+  { q: "The most important human tradition during Novruz?", options: ["Buying new clothes", "Reconcile and avoid quarrels", "Eating a lot"], answer: 1 },
+  { q: "The main symbol of Novruz?", options: ["Qogal", "Samani", "Candle"], answer: 1 },
+  { q: "What does the green color of Samani indicate?", options: ["Water", "Awakening of nature", "Power of fire"], answer: 1 },
+  { q: "According to belief, a fruitful year depends on what?", options: ["Quickly extinguished candles", "Healthy Samani", "Rainfall"], answer: 1 },
+  { q: "What is placed in the center of the holiday tray?", options: ["Pakhlava", "Samani", "Mirror"], answer: 1 },
+  { q: "For whom are the candles on the tray lit?", options: ["Guests", "As many as family members", "For ancestors’ spirits"], answer: 1 },
+  { q: "Candles symbolize what?", options: ["Light and warmth", "Wind", "Patience"], answer: 0 },
+  { q: "What does 'Sabzi' in '7 S' represent?", options: ["Sourness", "Greens", "Taste"], answer: 1 },
+  { q: "What does vinegar on the table symbolize?", options: ["Sweetness", "Purity and sharpness", "Warmth"], answer: 1 },
+  { q: "Why is speaking badly forbidden during Novruz?", options: ["Neighbors will be offended", "Wind spreads misfortune", "It's legally prohibited"], answer: 1 },
+  { q: "What does garlic on the table represent?", options: ["Health", "Wealth", "Beauty"], answer: 0 },
+  { q: "What is usually tied around Samani?", options: ["Black ribbon", "Red ribbon", "Green string"], answer: 1 },
+  { q: "Which international organization officially recognizes Novruz?", options: ["NATO", "UN (United Nations)", "EU"], answer: 1 },
+  { q: "Which property of water is emphasized on Water Wednesday?", options: ["Coldness", "Sacredness and source of life", "Flow"], answer: 1 },
+  { q: "Novruz best represents which values?", options: ["War and victory", "Peace, unity, and harmony with nature", "Loneliness"], answer: 1 },
+  { q: "When candles on the tray extinguish by themselves, what does it indicate?", options: ["Misfortune", "Bright future and prosperity", "Return of winter"], answer: 1 }
+],
+ru: [
+  { q: "Исторические корни Новруза охватывают сколько лет?", options: ["1000 лет", "2000 лет", "Более 3000 лет"], answer: 2 },
+  { q: "В древнем зороастрийском веровании, что символизировал Новруз?", options: ["Сбор урожая", "Победа добра над злом", "Дождь"], answer: 1 },
+  { q: "В эпосе 'Шахнаме', Новруз связан с каким правителем?", options: ["Кейкубад", "Джемшид", "Дара"], answer: 1 },
+  { q: "В турецкой мифологии, Новруз символизирует какое событие?", options: ["Выход из Эргенекона", "Рождение Манаса", "Возвращение Кёроолу"], answer: 0 },
+  { q: "Научно, Новруз основан на каком астрономическом явлении?", options: ["Летнее солнцестояние", "Весеннее равноденствие", "Середина зимы"], answer: 1 },
+  { q: "Кто подготовил 'Джалали календарь', определявший дату Новруза?", options: ["Насир ад-Дин Туси", "Омар Хайям", "Аль-Бируни"], answer: 1 },
+  { q: "В каком году Новруз был внесён в список нематериального наследия ЮНЕСКО?", options: ["2001", "2009", "2015"], answer: 1 },
+  { q: "Примерно сколько людей отмечают Новруз в мире?", options: ["100 миллионов", "200 миллионов", "Более 300 миллионов"], answer: 2 },
+  { q: "Подготовка к Новрузу начинается с какого количества основных чаршамб?", options: ["3", "4", "7"], answer: 1 },
+  { q: "Какой чаршамба первый?", options: ["Огненная чаршамба", "Ветровая чаршамба", "Водная чаршамба"], answer: 2 },
+  { q: "Другое название Водной чаршамбы?", options: ["Ускю чаршамба", "Первоначальная чаршамба", "Последняя чаршамба"], answer: 1 },
+  { q: "Что нужно делать рано утром в Водную чаршамбу для очищения?", options: ["Разжечь костёр", "Пройти по воде", "Посеять пшеницу"], answer: 1 },
+  { q: "Фольклорное название Огненной чаршамбы?", options: ["Ускю чаршамба", "Ветровая чаршамба", "Святая чаршамба"], answer: 0 },
+  { q: "Что говорят люди, перепрыгивая через костёр?", options: ["'Новруз пришёл, весна пришла'", "'Пусть мой вес-счастье сгорит в этом огне'", "'Пусть ваш очаг будет благословен'"], answer: 1 },
+  { q: "Ветровая чаршамба символизирует пробуждение чего?", options: ["Земли", "Воды", "Воздуха"], answer: 2 },
+  { q: "Почему важно говорить хорошие слова на Ветровую чаршамбу?", options: ["Считается, что ветер их разнесёт", "Это символ плодородия", "Потому что соседи слышат"], answer: 0 },
+  { q: "Другое название Земляной чаршамбы?", options: ["Первоначальная чаршамба", "Последняя чаршамба", "Средняя чаршамба"], answer: 1 },
+  { q: "На какой чаршамбе семьи собираются, бросают шапки и гадают?", options: ["Огненная чаршамба", "Ветровая чаршамба", "Земляная чаршамба"], answer: 2 },
+  { q: "Форма Когала символизирует что?", options: ["Луну", "Солнце", "Звезду"], answer: 1 },
+  { q: "Что символизирует кунжут на Когале?", options: ["Дождь", "Тепло солнца и плодородие", "Слои земли"], answer: 1 },
+  { q: "Шекербура символизирует какое небесное тело?", options: ["Солнце", "Луну (полумесяц)", "Венеру"], answer: 1 },
+  { q: "Что напоминают узоры на Шекербуре?", options: ["Следы на Луне", "Листья", "Волны"], answer: 0 },
+  { q: "Форма пахлавы символизирует что?", options: ["Звезду или огонь", "Море", "Горы"], answer: 0 },
+  { q: "Что символизирует орех в центре пахлавы?", options: ["Человека", "Центр вселенной", "Дерево"], answer: 1 },
+  { q: "Слоистая структура пахлавы показывает что?", options: ["Месяцы года", "Глубину вселенной", "Членов семьи"], answer: 1 },
+  { q: "Какая действие с костром запрещено?", options: ["Перепрыгивать", "Танцевать вокруг", "Тушить водой"], answer: 2 },
+  { q: "Сколько предметов на праздничном столе должно начинаться с буквы 'С'?", options: ["5", "7", "12"], answer: 1 },
+  { q: "Что не входит в '7 С'?", options: ["Сумах", "Зелень", "Сахар"], answer: 2 },
+  { q: "Кто олицетворяет зиму в новрузских спектаклях?", options: ["Лысый", "Коса", "Весенняя девушка"], answer: 1 },
+  { q: "Кто олицетворяет весну в новрузских спектаклях?", options: ["Коса", "Лысый", "Див"], answer: 0 },
+  { q: "Что символизирует борьба яиц?", options: ["Войну", "Начало жизни", "Силу"], answer: 1 },
+  { q: "Любимая игра детей на Новруз?", options: ["Прятки", "Бросание шапки", "Човган"], answer: 1 },
+  { q: "Что определяет судьбу в ухе?", options: ["Первое услышанное слово", "Брошенная шапка", "Съеденные сладости"], answer: 0 },
+  { q: "Какое гадание даёт знаки о будущем?", options: ["Стук в дверь", "Гадание на кольце", "Гадание на воде"], answer: 1 },
+  { q: "Главная человеческая традиция на Новруз?", options: ["Покупка новой одежды", "Мириться и не оставаться обиженным", "Много есть"], answer: 1 },
+  { q: "Главный символ Новруза?", options: ["Когал", "Пшеница", "Свеча"], answer: 1 },
+  { q: "Что означает зелёный цвет пшеницы?", options: ["Воду", "Пробуждение природы", "Силу огня"], answer: 1 },
+  { q: "На что влияет плодородный год по верованию?", options: ["Быстрое гашение свечей", "Пышность пшеницы", "Дождь"], answer: 1 },
+  { q: "Что помещают в центре праздничного подноса?", options: ["Пахлаву", "Пшеницу", "Зеркало"], answer: 1 },
+  { q: "Свечи на праздничном подносе зажигают для кого?", options: ["Для гостей", "В количестве членов семьи", "Для предков"], answer: 1 },
+  { q: "Что символизируют свечи?", options: ["Свет и тепло", "Ветер", "Терпение"], answer: 0 },
+  { q: "Что означает 'зелень' в 7 С?", options: ["Кислотность", "Зелень", "Вкус"], answer: 1 },
+  { q: "Что символизирует уксус на столе?", options: ["Сладость", "Чистоту и остроту", "Тепло"], answer: 1 },
+  { q: "Почему нельзя говорить плохие слова на Новруз?", options: ["Соседи обидятся", "Ветер разнесёт и принесёт несчастье", "Это запрещено законом"], answer: 1 },
+  { q: "Что символизирует чеснок на столе?", options: ["Здоровье", "Богатство", "Красоту"], answer: 0 },
+  { q: "Что обычно завязывают вокруг пшеницы?", options: ["Чёрную ленту", "Красную ленту", "Зелёный шнур"], answer: 1 },
+  { q: "Какой международной организацией официально признан Новруз?", options: ["НАТО", "ООН", "ЕС"], answer: 1 },
+  { q: "Какая особенность воды выделяется в Водную чаршамбу?", options: ["Холодность", "Святость и источник жизни", "Текучесть"], answer: 1 },
+  { q: "Какие ценности ярче всего выражает Новруз?", options: ["Война и победа", "Мир, единство и гармония с природой", "Одиночество"], answer: 1 },
+  { q: "Что означает самопроизвольное погасание свечей?", options: ["Несчастье", "Светлое будущее и благополучие", "Возвращение зимы"], answer: 1 }
+],
+ge: [
+  { q: "რამდენი წლის ისტორიული საფუძველი აქვს ნოვრუზს?", options: ["1000 წელი", "2000 წელი", "უფრო მეტი, ვიდრე 3000 წელი"], answer: 2 },
+  { q: "ძველი ზოროსტრიული რწმენის მიხედვით, რას გამოხატავდა ნოვრუზი?", options: ["მოსავლის შეგროვება", "კარგის მოგება ბოროტზე", "წვიმის წვება"], answer: 1 },
+  { q: "ეპოსში 'შაჰნამე', ნოვრუზი რომელ მმართველთან ასოცირდება?", options: ["ქეიკუბადი", "ჯემშიდი", "დარა"], answer: 1 },
+  { q: "თურქული მითოლოგიაში, ნოვრუზი რომელ მოვლენას აღნიშნავს?", options: ["ერგენეკონიდან გამოსვლა", "მანასის დაბადება", "კოროღლუს დაბრუნება"], answer: 0 },
+  { q: "მეცნიერულად ნოვრუზი რომელ ასტრონომიულ მოვლენაზეა დაფუძნებული?", options: ["ზაფხულის წვერვა", "გაზაფხულის მზისა და ღამის თანაბრობა", "ზამთრის შუა"], answer: 1 },
+  { q: "ვინ მოამზადა 'ჯალალი კალენდარი', რომელმაც ნოვრუზის დრო განსაზღვრა?", options: ["ნასირ ად-დინ ტუსი", "ომარ ხაიამი", "ალ-ბირუნი"], answer: 1 },
+  { q: "რომელ წელს ნოვრუზი იუნესკოს არაფორმალური კულტურული მემკვიდრეობის სიაში შევიდა?", options: ["2001", "2009", "2015"], answer: 1 },
+  { q: "რამდენი ადამიანი აღნიშნავს ნოვრუზს მსოფლიოში?", options: ["100 მილიონი", "200 მილიონი", "მეტი, ვიდრე 300 მილიონი"], answer: 2 },
+  { q: "ნოვრუზისთვის მზადება იწყება რამდენი მთავარ ჭარშამბით?", options: ["3", "4", "7"], answer: 1 },
+  { q: "რომელია პირველი ჭარშამბა?", options: ["ცეცხლის ჭარშამბა", "ქარის ჭარშამბა", "წყლის ჭარშამბა"], answer: 2 },
+  { q: "წყლის ჭარშამბას სხვა სახელწოდება?", options: ["უსკუ ჭარშამბა", "საწყისი ჭარშამბა", "ბოლო ჭარშამბა"], answer: 1 },
+  { q: "რა უნდა გააკეთო წყლის ჭარშამბის დილიდან, რომ თავი გაწმინდოს?", options: ["ვარლი გაჩენა", "წყალზე სიარული", "სიმინდის დათესვა"], answer: 1 },
+  { q: "ცეცხლის ჭარშამბის ხალხური სახელი?", options: ["უსკუ ჭარშამბა", "ქარის ჭარშამბა", "წმინდა ჭარშამბა"], answer: 0 },
+  { q: "რა ამბობენ ადამიანები, როცა ცეცხლის თავზე ხტებიან?", options: ["'ნოვრუზი მოვიდა, გაზაფხული მოვიდა'", "'ჩემის წონა-იღბალი დაიწვას ამ ცეცხლში'", "'თქვენი ოჯახის კერა იყოს ბლაგოსლებული'"], answer: 1 },
+  { q: "ქარის ჭარშამბა რას გამოხატავს?", options: ["მიწის", "წყლის", "ჰაერის"], answer: 2 },
+  { q: "რატომ მნიშვნელოვანია კარგი სიტყვების თქმა ქარის ჭარშამბაზე?", options: ["საკრალურია, რომ ქარი სიტყვებს გადასცემს", "ეს ნაყოფიერების სიმბოლოა", "მეზობლები დაიგონებენ"], answer: 0 },
+  { q: "მიწის ჭარშამბას სხვა სახელია?", options: ["საწყისი ჭარშამბა", "ბოლო ჭარშამბა", "საშუალო ჭარშამბა"], answer: 1 },
+  { q: "რომელ ჭარშამბაზე ოჯახები იყრიან თავს, ისვრიან ქუდებს და ფალავს?", options: ["ცეცხლის ჭარშამბა", "ქარის ჭარშამბა", "მიწის ჭარშამბა"], answer: 2 },
+  { q: "კოგალის ფორმა რას გამოხატავს?", options: ["თავს", "მზეს", "ვარსკვლავს"], answer: 1 },
+  { q: "კოგალზე მოყრილი სესამის სიმბოლო?", options: ["წვიმა", "მზის სითბო და ნაყოფიერება", "მიწის ფენები"], answer: 1 },
+  { q: "შექერბურა რომელ ციური სხეულის სიმბოლოა?", options: ["მზე", "თითი (ნახევარმთვარე)", "ვენერა"], answer: 1 },
+  { q: "შექერბურას ნაქარგები რას ჰგავს?", options: ["მთვარის კვალებს", "ფოთლებს", "ტალღებს"], answer: 0 },
+  { q: "პახლავის ფორმა რას გამოხატავს?", options: ["ვარსკვლავი ან ცეცხლი", "ზღვას", "მაღლობებს"], answer: 0 },
+  { q: "პახლავაში ნაპოვნი თხილი ან თხილი რას წარმოადგენს?", options: ["ადამიანს", "კოსმოსის ცენტრს", "ხეს"], answer: 1 },
+  { q: "პახლავას ფენა ფენიანი სტრუქტურა რას აჩვენებს?", options: ["წლის თვეებს", "კოსმოსის სიღრმეს", "ოჯახის წევრებს"], answer: 1 },
+  { q: "რა მოქმედება აკრძალულია კოცონთან?", options: ["მოხტომა", "ცეკვა გარშემო", "წყლით ჩაქრობა"], answer: 2 },
+  { q: "რამდენი ნივთი უნდა იყოს სუფრაზე, რომელიც იწყება 'S'-ით?", options: ["5", "7", "12"], answer: 1 },
+  { q: "რომელი არ შედის '7 S'-ში?", options: ["სამაქჰი", "ბოსტნეული", "შაქარი"], answer: 2 },
+  { q: "ვინ გამოხატავს ზამთარს ნოვრუზის წარმოდგენებში?", options: ["გაშიშვლებული", "კოსა", "გაზაფხულის გოგონა"], answer: 1 },
+  { q: "ვინ გამოხატავს გაზაფხულს ნოვრუზის წარმოდგენებში?", options: ["კოსა", "გაშიშვლებული", "დივი"], answer: 0 },
+  { q: "რა წარმოადგენს კვერცხის ბრძოლა?", options: ["ომს", "ცხოვრების დასაწყისს", "ძალას"], answer: 1 },
+  { q: "ბავშვთა საყვარელი თამაში ნოვრუზზე?", options: ["მალვა", "ქუდის სროლა", "ჩოვგან"], answer: 1 },
+  { q: "ყურის ბმა რას განსაზღვრავს?", options: ["პირველი მოსმენილი სიტყვა", "ფ thrown ქუდი", "მირთმეული ტკბილეული"], answer: 0 },
+  { q: "რომელი ბმა აძლევს ნიშნებს მომავლის შესახებ?", options: ["კარის კაკუნი", "ბეჭდის ბმა", "წყლის ბმა"], answer: 1 },
+  { q: "ყველაზე მთავარი ადამიანური ტრადიცია ნოვრუზზე?", options: ["ახალი ტანსაცმლის შეძენა", "მშვიდობის დამყარება და შურის ქონა არ დარჩეს", "ჭამა ბევრად"], answer: 1 },
+  { q: "ნოვრუზის მთავარი სიმბოლო?", options: ["კოგალ", "სიმინდის სიძველე", "წვეტი"], answer: 1 },
+  { q: "სიმინდის სიძველის მწვანე ფერი რას აღნიშნავს?", options: ["წყალს", "ბუნების გაღვიძებას", "ცეცხლის ძლიერებას"], answer: 1 },
+  { q: "რწმენის მიხედვით, ნაყოფიერი წელი საიდან გამომდინარეობს?", options: ["წვეტის სწრაფად ჩაქრობა", "სიმინდის სიძველე", "წვიმა"], answer: 1 },
+  { q: "საპატიო სუფრის ცენტრში რას დებს?", options: ["პახლავა", "სიმინდი", "სარკე"], answer: 1 },
+  { q: "სუფრის შამები ვისათვის იწვის?", options: ["წვეულების სტუმრებისთვის", "ოჯახის წევრების რაოდენობით", "წარმატებული წინაპრებისთვის"], answer: 1 },
+  { q: "შამები რას გამოხატავს?", options: ["სინათლე და სითბო", "ქარი", "მოსაწყენი"], answer: 0 },
+  { q: "ბოსტნეული '7 S'-ში რას ნიშნავს?", options: ["მჟავე", "მწვანილობა", "გემო"], answer: 1 },
+  { q: "სუფრის ძმარი რას გამოხატავს?", options: ["ტკბილობას", "სისუფთავეს და სიძლიერეს", "სითბოს"], answer: 1 },
+  { q: "რატომ არ შეიძლება ცუდი სიტყვების თქმა ნოვრუზზე?", options: ["მეზობლები უკმაყოფილო იქნებიან", "ქარი მოიტანს უბედურებას", "კანონით აკრძალულია"], answer: 1 },
+  { q: "სუფრის ნიორი რას გამოხატავს?", options: ["ჯანმრთელობას", "ძვირფასობას", "სილამაზეს"], answer: 0 },
+  { q: "სიმინდის სიძველის გარშემო ჩვეულებრივ რა აკრავს?", options: ["შავი ლენტი", "წითელი ლენტი", "მწვანე თოკი"], answer: 1 },
+  { q: "ნოვრუზი რომელი საერთაშორისო ორგანიზაციის მიერ ოფიციალურად არის აღიარებული?", options: ["ნატო", "გაერთიანებული ერების ორგანიზაცია", "ევროკავშირი"], answer: 1 },
+  { q: "წყლის ჭარშამბაში წყლის რომელი თვისება ხაზგასასმელია?", options: ["ცივი", "წმინდა და სიცოცხლის წყარო", "მოძრავი"], answer: 1 },
+  { q: "ნოვრუზი რომელი ღირებულებების ყველაზე კარგად გამოხატულებაა?", options: ["ომი და გამარჯვება", "მშვიდობა, ერთობა და ჰარმონია ბუნებასთან", "მარტოობა"], answer: 1 },
+  { q: "როდესაც შამი თავისით ჩაქრება, რას ნიშნავს?", options: ["უბედურებას", "ღია მომავალს და კეთილდღეობას", "ზამთრის დაბრუნებას"], answer: 1 }
+],
+hy: [
+  { q: "Նորուզի պատմական արմատները քանի տարի են ծածկում?", options: ["1000 տարի", "2000 տարի", "Ավելին քան 3000 տարի"], answer: 2 },
+  { q: "Հին Զորոաստրական հավատքում, Նորուզը ինչն էր խորհրդանշում?", options: ["Հարեւանության հավաքագրում", "Լավի հաղթանակը չարի վրա", "Անձրեւը"], answer: 1 },
+  { q: "«Շահնամե» էպոսում Նորուզը կապված է որ թագավորի հետ?", options: ["Քեյքուբադ", "Ջամշիդ", "Դարա"], answer: 1 },
+  { q: "Թուրքական միթոլոգիայում Նորուզը որ իրադարձությունն է խորհրդանշում?", options: ["Երգենեկոնից դուրս գալը", "Մանասի ծնունդը", "Կորողլուի վերադարձը"], answer: 0 },
+  { q: "Գիտականորեն Նորուզը հիմնված է որ աստղագիտական իրադարձության վրա?", options: ["Ամառային գագաթնակետ", "Գարնանային գիշեր-ցերեկի հավասարություն", "Ձմեռվա միջին"], answer: 1 },
+  { q: "Ով է կազմել 'Ջալալի օրացույցը', որը որոշել է Նորուզի ժամանակը?", options: ["Նասիրադդին Տուսի", "Օմար Խայյամ", "Ալ-Բիրունի"], answer: 1 },
+  { q: "Որ տարում Նորուզը ներառվել է ՅՈՒՆԵՍԿՕ-ի Անպարփակ մշակութային ժառանգության ցուցակում?", options: ["2001", "2009", "2015"], answer: 1 },
+  { q: "Քաղաքակրթության գրեթե քանի մարդ է նշում Նորուզը աշխարհում?", options: ["100 միլիոն", "200 միլիոն", "Ավելի քան 300 միլիոն"], answer: 2 },
+  { q: "Նորուզի պատրաստությունը սկսվում է քանի հիմնական չարշամբայից?", options: ["3", "4", "7"], answer: 1 },
+  { q: "Ո՞րն է առաջին չարշամբան?", options: ["Ծխի չարշամբա", "Քամու չարշամբա", "Ջրի չարշամբա"], answer: 2 },
+  { q: "Ջրի չարշամբայի այլ անունը?", options: ["Ուսկու չարշամբա", "Սկիզբի չարշամբա", "Վերջին չարշամբա"], answer: 1 },
+  { q: "Ջրի չարշամբայի վաղ առավոտյան ինչ անել, որ մարդը մաքրվի?", options: ["Կրակ վառել", "Ջրի վրա քայլել", "Ամիո ցանել"], answer: 1 },
+  { q: "Ծխի չարշամբայի ժողովրդական անունը?", options: ["Ուսկու չարշամբա", "Քամու չարշամբա", "Սուրբ չարշամբա"], answer: 0 },
+  { q: "Ո՞ր խոսքերը ասում են մարդիկ, երբ կրակի վրայով ցատկում են?", options: ["«Նորուզը եկավ, գարունը եկավ»", "«Իմ քաշը-վճակը վառվի այս կրակի մեջ»", "«Ձեր կրակը բլագոսլավելի լինի»"], answer: 1 },
+  { q: "Քամու չարշամբան ինչի արթնացում է ցույց տալիս?", options: ["Երկիրը", "Ջուրը", "Օդը"], answer: 2 },
+  { q: "Ինչու է կարևոր լավ խոսքեր ասել քամու չարշամբայում?", options: ["Քանի որ քամին դրանք կվերհանձի", "Որովհետեւ սա բարեկեցության նշան է", "Որովհետեւ հարեւանները լսում են"], answer: 0 },
+  { q: "Երկրի չարշամբայի այլ անունը?", options: ["Սկիզբի չարշամբա", "Վերջին չարշամբա", "Միջին չարշամբա"], answer: 1 },
+  { q: "Ո՞ր չարշամբայում ընտանիքները հավաքվում են, գլխարկ են նետում և բաժին բացում?", options: ["Ծխի չարշամբա", "Քամու չարշամբա", "Երկրի չարշամբա"], answer: 2 },
+  { q: "Կողալի ձևը ինչի է խորհրդանշում?", options: ["Ամիո", "Արեւը", "Աստղը"], answer: 1 },
+  { q: "Կողալի վրա ցանված սեզամը ինչի նշան է?", options: ["Անձրեւի", "Արեւի ջերմություն և բարգավաճում", "Երկրի շերտեր"], answer: 1 },
+  { q: "Շաքարբուրան ո՞ր երկնային մարմնի խորհրդանիշն է?", options: ["Արեւի", "Ասծղի (կիսագլոբ)", "Վեներա"], answer: 1 },
+  { q: "Շաքարբուրայի զարդանախշերը ինչին են հիշեցնում?", options: ["Ասծղի մակերեսի հետքեր", "Տերեւներ", "Մաղեր"], answer: 0 },
+  { q: "Պաղլավայի ձևը ինչ է ներկայացնում?", options: ["Աստղ կամ կրակ", "Ծովը", "Գառները"], answer: 0 },
+  { q: "Պաղլավայի մեջ ընկած ընկույզը կամ բոդինը ինչի նշանն է?", options: ["Մարդը", "Տիեզերքի կենտրոնը", "Ճյուղը"], answer: 1 },
+  { q: "Պաղլավայի շերտավոր կառուցվածքը ինչի է ի նշան?", options: ["Տարիքի ամիսները", "Տիեզերքի խորությունը", "Ընտանիքի անդամները"], answer: 1 },
+  { q: "Կրակի հետ ինչ գործողություն է արգելված?", options: ["Վազել վրայով", "Բալետ պարել", "Ջրով անցնել"], answer: 2 },
+  { q: "Սեղանի վրա 'S'-ով սկսվող քանի սնունդ պետք է լինի?", options: ["5", "7", "12"], answer: 1 },
+  { q: "Ո՞րն չի պատկանում '7 S'-ին?", options: ["Սումախ", "Բույսեր", "Շաքար"], answer: 2 },
+  { q: "Նորուզի ներկայացումներում ձմեռը ով է ներկայացնում?", options: ["Ամպամած", "Կոսա", "Գարնան աղջիկ"], answer: 1 },
+  { q: "Նորուզի ներկայացումներում գարունը ով է ներկայացնում?", options: ["Կոսա", "Ամպամած", "Դիվ"], answer: 0 },
+  { q: "Ձվի պայքարը ինչի նշանն է?", options: ["Պատերազմի", "Կյանքի սկիզբի", "Ուժի"], answer: 1 },
+  { q: "Երեխաների սիրելի Նորուզ խաղը?", options: ["Թաքցնել-գտնել", "Թղթի գլխարկ", "Չովգան"], answer: 1 },
+  { q: "Ձու-բույլը ինչ է որոշում?", options: ["Առաջին լսած բառը", "Թողած գլխարկը", "Սնունդը"], answer: 0 },
+  { q: "Ո՞ր բաժինը նշում է ապագայի մասին նշաններ?", options: ["Դուռը թակելը", "Բանալիի բաժին", "Ջրի բաժին"], answer: 1 },
+  { q: "Նորուզում ամենակարեւոր մարդկային ավանդույթը?", options: ["Նոր հագուստ գնելը", "Հաշտվել և չթողնել թշնամություն", "Շատ ուտելը"], answer: 1 },
+  { q: "Նորուզի հիմնական խորհրդանիշը?", options: ["Կողալ", "Սեմենի", "Մոմ"], answer: 1 },
+  { q: "Սեմենի կանաչ գույնը ինչի նշան է?", options: ["Ջրի", "Բնության արթնության", "Կրակի ուժի"], answer: 1 },
+  { q: "Հավատի համաձայն՝ բերքառատ տարիքը ինչից է կախված?", options: ["Մոմերի արագ մարումից", "Սեմենի բուսանքով լինելուց", "Անձրեւից"], answer: 1 },
+  { q: "Խոնջայի կենտրոնում ի՞նչ է դրվում?", options: ["Պաղլավա", "Սեմենի", " հայելին"], answer: 1 },
+  { q: "Խոնջայի մոմերը ում համար են վառվում?", options: ["Հյուրերի համար", "Ընտանեկան անդամների թվով", "Նախնիների հոգիների համար"], answer: 1 },
+  { q: "Մոմերը ինչի խորհրդանիշն են?", options: ["Լույս և ջերմություն", "Քամի", "Սպանություն"], answer: 0 },
+  { q: "Բույսերը '7 S'-ում ինչ են խորհրդանշում?", options: ["Թթվայնությունը", "Կանաչը", "Արտահոսքը"], answer: 1 },
+  { q: "Սեղանի քացախը ինչի նշան է?", options: ["Քաղցրության", "Սաքրության և կտրուկության", "Ջերմության"], answer: 1 },
+  { q: "Ինչու չի կարելի վատ խոսել Նորուզի ժամանակ?", options: ["Հարեւանները կզայրանան", "Քամին բերում է դժբախտություն", "Օրենքով արգելված է"], answer: 1 },
+  { q: "Սեղանի սխտորը ինչ է խորհրդանշում?", options: ["Առողջություն", "Հարստություն", "Գեղեցկություն"], answer: 0 },
+  { q: "Սեմենի շուրջը սովորաբար ի՞նչ է կապվում?", options: ["Սեւ ժապավեն", "Կարմիր ժապավեն", "Կանաչ պարան"], answer: 1 },
+  { q: "Նորուզը որ միջազգային կազմակերպության կողմից պաշտոնապես ճանաչված է?", options: ["ՆԱՏՕ", "Միավորված ազգերի կազմակերպություն", "Եվրամիություն"], answer: 1 },
+  { q: "Ջրի չարշամբայում ջրի որ հատկությունն է ընդգծվում?", options: ["Ցուրտը", "Սրբությունը և կյանքի աղբյուրը", "Հոսքը"], answer: 1 },
+  { q: "Նորուզը որ արժեքների լավագույն արտացոլումն է?", options: ["Պատերազմ և հաղթանակ", "Խաղաղություն, միություն և բնության հետ հարմոնիա", "Լոնելինես"], answer: 1 },
+  { q: "Երբ խոնջայի մոմերը ինքնաբերաբար մարում են, ինչի նշանն է դա?", options: ["Դժբախտության", "Բաց ապագայի և բարգավաճման", "Ձմեռվա վերադարձ"], answer: 1 }
+]
+        
+};
+let currentLang = localStorage.getItem("lang") || "az";
+
+function renderQuiz(lang) {
+  const quizEl = document.getElementById("quiz");
+  quizEl.innerHTML = "";
+  quizTranslations[lang].forEach((q, index) => {
+    const qDiv = document.createElement("div");
+    qDiv.className = "question";
+    qDiv.innerHTML = `<strong>${index+1}. ${q.q}</strong>`;
+    const optsDiv = document.createElement("div");
+    optsDiv.className = "options";
+    q.options.forEach((opt, i) => {
+      optsDiv.innerHTML += `<label><input type="radio" name="q${index}" value="${i}"> ${opt}</label>`;
+    });
+    qDiv.appendChild(optsDiv);
+    quizEl.appendChild(qDiv);
+  });
+  document.getElementById("result").innerText = "";
+}
+
+renderQuiz(currentLang);
+
+// Submit düyməsi
+document.getElementById("submit").addEventListener("click", () => {
+  const questions = quizTranslations[currentLang];
+  let score = 0;
+  questions.forEach((q, index) => {
+    const selected = document.querySelector(`input[name=q${index}]:checked`);
+    if (selected && parseInt(selected.value) === q.answer) score++;
+  });
+ document.getElementById("result").innerText = `Sizin nəticəniz: ${score} / ${questions.length}`;
+});
+
+// Dil seçimi
+document.getElementById("langSelect").value = currentLang;
+document.getElementById("langSelect").addEventListener("change", function() {
+  currentLang = this.value;
+  localStorage.setItem("lang", currentLang);
+  renderQuiz(currentLang);
+});
+  </script>
+</body>
+
+</html>
